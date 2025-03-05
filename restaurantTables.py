@@ -1,3 +1,4 @@
+
 # ------------------------------------------------------------------------------------
 # The following 2D lists mimic a restaurant seating layout, similar to a grid.
 # 
@@ -43,3 +44,91 @@ restaurant_tables2 = [
     [5,        'o',      'x',      'o',      'x',      'o',      'o'],
     [6,        'o',      'o',      'o',      'o',      'x',      'o']
 ]
+
+start
+def level_1 (tables, timeslot):
+    """
+    Level 1 
+   Goal: List all tables that are currently free (‘o’ in the chosen timeslot)
+   Output: A list of table IDs (or the entire table object) representing free tables.
+    """
+    #initialize output
+    output = []
+    #get header row in table
+    header = tables[0]
+    #run through each table in timeslot row
+    timeslot_row= tables[timeslot]
+    for i in range(1, len(timeslot_row)):
+        #check for empty tables
+        if timeslot_row[i] == 'o':
+            #if found, store in output
+            output.append(header[i])
+    
+    #return output
+    return output
+
+def level_2 (party_size, tables):
+    """
+    Goal: Given a party size (e.g., 2, 3, 4 people), find one table that can seat at least that many people (i.e., capacity >= party_size) and is free.
+    Output: Return a single table (or table ID) that fits the requirement.
+    """
+    #initialize output
+    output = []
+    #get header row
+    header = tables[0]
+    #loop through each table in header
+    for table in header:
+        #check if each table capacity is greater than or equal to party size
+        if int( table[table.index("(")+1 : table.index(")")] ) >= party_size:
+            #add table to output
+            output.append(table)
+    #return output
+    return output
+
+def level_3 (tables, party_size, timeslot):
+    """
+    Goal: Given a party size, return all tables that can seat that many people and are free.
+    """
+    #initialize output
+    output = []
+    #get all tables that are free in timeslot into list 1
+    list_one = level_1(tables, timeslot)
+    #get all tables with capacity greater than or equal to capacity size into list 2
+    list_two = level_2 (party_size, tables)
+    #look through each table in list one
+    for table in list_one:
+        #if the table is in list 2
+        if table in list_two:
+            #add table to output
+            output.append(table)
+    #return output
+    return output
+
+def level_4 ()
+    """
+    Goal: Some restaurants can combine two adjacent tables if one table alone isn’t big enough.
+    If a single table can’t seat the group, check if two adjacent tables combined have enough capacity.
+    Output: A list of all table combinations (single or adjacent pairs) that can seat the party.
+    """
+    #initialize output
+    output = []
+    #get header row
+    header = tables[0]
+    #intialize past capacity
+    past_capacity = 0
+    #loop through each table in header
+    for table in header:
+        #check if each table capacity is greater than or equal to party size
+        capacity = int( table[table.index("(")+1 : table.index(")")] )
+        if capacity >= party_size:
+            #add table to output
+            output.append(table)
+        else: 
+            #if past capacity plus current capacity  greater than or equal to party size
+            if past_capacity + capacity >= party_size:
+                #add table to output
+                output.append(table)
+        #update past capacity with current capacity 
+        past_capacity = capacity
+    #return output
+    return output
